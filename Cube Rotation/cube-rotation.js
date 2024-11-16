@@ -20,16 +20,17 @@ scene.add(cube);
 
 let clock = new THREE.Clock();
 
+let radius = 3;
+camera.position.set(radius, 0, 0); // Start at a distance along the X-axis
+camera.lookAt(cube.position); // Ensure the camera is always looking at the cube
 
 function animate(){
     requestAnimationFrame(animate);
 
-    cube.rotation.x += 0.01;
-    cube.rotation.y +=0.01;
-    // by default rotation speed depends on FPS supported by user's pc
-    
-    cube.rotation.x = clock.getElapsedTime() * 2;
-    cube.rotation.y = clock.getElapsedTime() * 2;
+    let time = performance.now() / 1000; // Time in seconds for smooth animation
+    camera.position.x = radius * Math.cos(time); // X coordinate on the circular orbit
+    camera.position.z = radius * Math.sin(time); // Z coordinate on the circular orbit
+    camera.lookAt(cube.position); // Keep the camera focused on the cube
 
     renderer.render(scene, camera);
 }

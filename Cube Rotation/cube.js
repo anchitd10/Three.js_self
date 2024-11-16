@@ -4,16 +4,18 @@ var camera = new THREE.PerspectiveCamera(
     0.5, 1000
 );
 
-camera.position.z = 5; // camera offset
+camera.position.z = 2; // camera offset
 
 var renderer = new THREE.WebGLRenderer(  { antialias: true } );
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 var geometry = new THREE.BoxGeometry(1, 1, 1); // (width, height, depth)
+// var material = new THREE.MeshBasicMaterial( {color: 0x00aaff});
 var material = new THREE.MeshNormalMaterial( {color: 0x00aaff});
 
 var cube = new THREE.Mesh(geometry, material);
+cube.position.x = 1;
 scene.add(cube);
 
 function animate(){

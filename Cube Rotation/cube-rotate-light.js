@@ -10,6 +10,9 @@ var renderer = new THREE.WebGLRenderer(  { antialias: true } ); //aliasing = jag
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
 // Point light
 var light = new THREE.PointLight(0xffffff, 75, 100); // (color, intensity, distance)
 light.position.set(5, 5, 5); // Place the light above the scene
@@ -17,14 +20,14 @@ scene.add(light);
 
 // Directional light
 // A DirectionalLight can simulate sunlight
-var directionalLight = new THREE.DirectionalLight(0xffffff, 1); //(color, intensity)
+var directionalLight = new THREE.DirectionalLight(0xffffff, 3); //(color, intensity)
 directionalLight.position.set(3, 3, 3);
 scene.add(directionalLight);
 
 // Hemisphere light
 // A HemisphereLight adds ambient light from the sky and ground, creating a natural effect
-var hemiLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1); // (skycolor, groundcolor, intensity)
-scene.add(hemiLight);
+// var hemiLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 1); // (skycolor, groundcolor, intensity)
+// scene.add(hemiLight);
 
 // Ambient light
 // global light
@@ -34,14 +37,24 @@ scene.add(ambientLight);
 // first cube
 var geometry1 = new THREE.BoxGeometry(1, 1, 1);
 var material1 = new THREE.MeshStandardMaterial({ color: 0x00aaff });
+geometry1.castShadow = true;
 var cube1 = new THREE.Mesh(geometry1, material1);
 scene.add(cube1);
 
 // second cube
 var geometry2 = new THREE.BoxGeometry(0.5, 0.5, 0.5);
 var material2 = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+geometry2.castShadow = true;
 var cube2 = new THREE.Mesh(geometry2, material2);
 scene.add(cube2);
+
+var planeGeometry = new THREE.PlaneGeometry(10, 10); // A large plane
+var planeMaterial = new THREE.MeshNormalMaterial();
+var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.rotation.x = -Math.PI / 2; // Rotate the plane to be horizontal
+plane.position.y = -1; // Position it below the cubes
+plane.receiveShadow = true; // The plane will receive shadows
+scene.add(plane);
 
 // initial camera position at a fixed radius
 let radius = 5;
